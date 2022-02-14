@@ -24,10 +24,14 @@ namespace Encapsulation.Services
 
         public void PutWorker(WorkerWrapper workerWrapper)
         {
-
-            workerPool.Put((TWorker)workerWrapper.worker);
-            workerWrapper.worker = null;
-            WorkerWrapper.Pool.Add(workerWrapper);
+            if (workerWrapper.worker is TWorker worker)
+            {
+                workerPool.Put(worker);
+                workerWrapper.worker = null;
+                WorkerWrapper.Pool.Add(workerWrapper);
+            }
+            else throw new System.Exception("Type of worker missed! Get " + workerWrapper.worker.GetType().Name 
+                + ", " + typeof(TWorker).Name + " expected");
         }
     }
 }
